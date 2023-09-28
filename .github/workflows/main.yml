@@ -91,8 +91,6 @@ jobs:
           ninja --version
           cmake --version
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
-          vcpkg install
-          vcpkg integrate install
         # cmd "${{ matrix.config.environment_script }}"
 
       - name: Install dependencies on ubuntu
@@ -104,7 +102,6 @@ jobs:
           cmake --version
           gcc --version
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
-          vcpkg install
 
       - name: Install dependencies on ubuntu9
         if: startsWith(matrix.config.name, 'Ubuntu_GCC_9')
@@ -142,7 +139,6 @@ jobs:
           echo cmake version after
           cmake --version
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
-          vcpkg install
 
       - name: Install dependencies on macos
         if: startsWith(matrix.config.os, 'macos')
@@ -151,21 +147,17 @@ jobs:
           ninja --version
           cmake --version
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
-          vcpkg install
 
       - name: Configure
         shell: bash
         run: |
-          echo $CMAKE_MAKE_PROGRAM
-          echo $CMAKE_C_COMPILER
-          echo $CMAKE_CXX_COMPILER
           mkdir build
           mkdir instdir
           cmake \
             -S . \
             -B . \
             -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
-            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
             -G "${{ matrix.config.generators }}" \
             -DCMAKE_INSTALL_PREFIX:PATH=instdir
 
