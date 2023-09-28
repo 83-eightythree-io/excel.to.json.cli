@@ -91,6 +91,15 @@ jobs:
           ninja --version
           cmake --version
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
+          mkdir build
+          mkdir instdir
+          cmake \
+            -S . \
+            -B . \
+            -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+            -G "${{ matrix.config.generators }}" \
+            -DCMAKE_INSTALL_PREFIX:PATH=instdir
         # cmd "${{ matrix.config.environment_script }}"
 
       - name: Install dependencies on ubuntu
@@ -102,6 +111,15 @@ jobs:
           cmake --version
           gcc --version
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
+          mkdir build
+          mkdir instdir
+          cmake \
+            -S . \
+            -B . \
+            -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+            -G "${{ matrix.config.generators }}" \
+            -DCMAKE_INSTALL_PREFIX:PATH=instdir
 
       - name: Install dependencies on ubuntu9
         if: startsWith(matrix.config.name, 'Ubuntu_GCC_9')
@@ -139,18 +157,6 @@ jobs:
           echo cmake version after
           cmake --version
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
-
-      - name: Install dependencies on macos
-        if: startsWith(matrix.config.os, 'macos')
-        run: |
-          brew install p7zip cmake ninja
-          ninja --version
-          cmake --version
-          ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
-
-      - name: Configure
-        shell: bash
-        run: |
           mkdir build
           mkdir instdir
           cmake \
@@ -160,6 +166,36 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
             -G "${{ matrix.config.generators }}" \
             -DCMAKE_INSTALL_PREFIX:PATH=instdir
+
+      - name: Install dependencies on macos
+        if: startsWith(matrix.config.os, 'macos')
+        run: |
+          brew install p7zip cmake ninja
+          ninja --version
+          cmake --version
+          ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
+          mkdir build
+          mkdir instdir
+          cmake \
+            -S . \
+            -B . \
+            -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+            -G "${{ matrix.config.generators }}" \
+            -DCMAKE_INSTALL_PREFIX:PATH=instdir
+
+#      - name: Configure
+#        shell: bash
+#        run: |
+#          mkdir build
+#          mkdir instdir
+#          cmake \
+#            -S . \
+#            -B . \
+#            -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
+#            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+#            -G "${{ matrix.config.generators }}" \
+#            -DCMAKE_INSTALL_PREFIX:PATH=instdir
 
       - name: Build
         shell: bash
