@@ -80,10 +80,6 @@ jobs:
         run: |
           echo github.event.action: ${{ github.event.action }}
           echo github.event_name: ${{ github.event_name }}
-      - name: run-vcpkg
-        uses: lukka/run-vcpkg@v11.1
-        with:
-          runVcpkgInstall: true
       - name: Install dependencies on windows
         if: startsWith(matrix.config.os, 'windows')
         run: |
@@ -145,6 +141,8 @@ jobs:
       - name: Configure
         shell: bash
         run: |
+          ./vcpkg/bootstrap-vcpkg.sh
+          vcpkg install
           mkdir build
           mkdir instdir
           cmake \
