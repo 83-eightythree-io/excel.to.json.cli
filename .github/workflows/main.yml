@@ -90,11 +90,11 @@ jobs:
           choco install ninja cmake
           ninja --version
           cmake --version
+          cmd "${{ matrix.config.environment_script }}"
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
           mkdir build
           mkdir instdir
           cmake -S . -B . -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -G "${{ matrix.config.generators }}" -DCMAKE_INSTALL_PREFIX:PATH=instdir
-        # cmd "${{ matrix.config.environment_script }}"
 
       - name: Install dependencies on ubuntu
         if: startsWith(matrix.config.name, 'Ubuntu_Latest_GCC')
@@ -160,6 +160,7 @@ jobs:
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
             -G "${{ matrix.config.generators }}" \
             -DCMAKE_INSTALL_PREFIX:PATH=instdir
+          ls -laR
 
       - name: Install dependencies on macos
         if: startsWith(matrix.config.os, 'macos')
@@ -193,11 +194,15 @@ jobs:
 
       - name: Build
         shell: bash
-        run: cmake --build . --config ${{ matrix.config.build_type }}
+        run: |
+          ls -laR
+          cmake --build . --config ${{ matrix.config.build_type }}
 
       - name: Install Strip
         shell: bash
-        run: cmake --install . --strip
+        run: |
+          ls -laR
+          cmake --install . --strip
 
       - name: Pack
         shell: bash
