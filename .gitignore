@@ -3,4 +3,3 @@ cmake-build-mingw/
 cmake-build-release/
 vcpkg_installed/
 .idea/
-vcpkg/
