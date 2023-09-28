@@ -83,12 +83,16 @@ jobs:
         run: |
           echo github.event.action: ${{ github.event.action }}
           echo github.event_name: ${{ github.event_name }}
+
       - name: Install dependencies on windows
         if: startsWith(matrix.config.os, 'windows')
         run: |
           choco install ninja cmake
           ninja --version
           cmake --version
+          ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
+          vcpkg install
+          vcpkg integrate install
         # cmd "${{ matrix.config.environment_script }}"
 
       - name: Install dependencies on ubuntu
@@ -99,6 +103,9 @@ jobs:
           ninja --version
           cmake --version
           gcc --version
+          ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
+          vcpkg install
+
       - name: Install dependencies on ubuntu9
         if: startsWith(matrix.config.name, 'Ubuntu_GCC_9')
         run: |
@@ -134,18 +141,18 @@ jobs:
           sudo update-alternatives --install /usr/bin/cmake cmake /opt/cmake/bin/cmake 1 --force
           echo cmake version after
           cmake --version
+          ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
+          vcpkg install
+
       - name: Install dependencies on macos
         if: startsWith(matrix.config.os, 'macos')
         run: |
           brew install p7zip cmake ninja
           ninja --version
           cmake --version
+          ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
+          vcpkg install
 
-      - name: Setup vcpkg (it does not install any package yet)
-        uses: lukka/run-vcpkg@v11
-        with:
-          runVcpkgInstall: true
-          
       - name: Configure
         shell: bash
         run: |
