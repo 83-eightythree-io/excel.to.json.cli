@@ -141,7 +141,7 @@ jobs:
       - name: Configure
         shell: bash
         run: |
-          ./vcpkg/bootstrap-vcpkg.sh
+          ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
           vcpkg install
           mkdir build
           mkdir instdir
