@@ -13,12 +13,14 @@ using namespace std;
 using namespace rapidjson;
 
 int main(int argc, char **argv) {
-    string filepath;
+    string filepath, output_path;
     xlsxioreader reader;
 
     cout << "Welcome to Excel to Json parser!" << endl;
     cout << "Enter the file (absolute path) you wish to parse: ";
     cin >> filepath;
+    cout << "Enter the location of the output file: ";
+    cin >> output_path;
     cout << "Parsing file...";
 
     // instantiates the json object
@@ -67,18 +69,12 @@ int main(int argc, char **argv) {
 
     xlsxioread_close(reader);
 
-    FILE* f = fopen("/Users/joao.lopes/CLionProjects/course/output.json", "wb");
+    FILE* f = fopen(output_path.c_str(), "wb");
     char writeBuffer[65536];
     FileWriteStream os(f, writeBuffer,sizeof(writeBuffer));
     Writer<FileWriteStream> writer(os);
     output.Accept(writer);
     fclose(f);
 
-//    for (const auto & header : headers) {
-//        cout << header << endl;
-//    }
-
     return 0;
 }
-
-// /Users/joao.lopes/Downloads/Extract_Automotive_Luxembourg_202306.xlsx
