@@ -1,7 +1,7 @@
 {
   "name" : "course",
   "version-string" : "1.0.0",
-  "builtin-baseline" : "db0473513e5dc73ec6b6f431ff05d2f398eea042",
+  "builtin-baseline" : "5a38b5ec0eee3d1a1a6faab5e944617fee2697cf",
   "dependencies" : [ {
     "name" : "rapidjson",
     "version>=" : "2023-04-27",
