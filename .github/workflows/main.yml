@@ -140,12 +140,15 @@ jobs:
           brew install p7zip cmake ninja
           ninja --version
           cmake --version
+
+      - name: Setup vcpkg (it does not install any package yet)
+        uses: lukka/run-vcpkg@v11
+        with:
+          runVcpkgInstall: true
           
       - name: Configure
         shell: bash
         run: |
-          ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
-          vcpkg install
           mkdir build
           mkdir instdir
           cmake \
