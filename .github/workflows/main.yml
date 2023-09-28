@@ -84,6 +84,7 @@ jobs:
         uses: lukka/run-vcpkg@v11.1
         with:
           runVcpkgInstall: true
+          vcpkgGitCommitId: '${{ matrix.vcpkgCommitId }}'
       - name: Install dependencies on windows
         if: startsWith(matrix.config.os, 'windows')
         run: |
